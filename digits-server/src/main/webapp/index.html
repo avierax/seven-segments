@@ -97,42 +97,51 @@
     <link type="text/css" rel="stylesheet" href="digits.css">
     <link type="text/css" rel="stylesheet" href="numbers.css">
 
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
+    <div id="container" style="display: inline-block">
+        <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
+            <defs>
+                <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
+                <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
+            </defs>
+            <g class="sevenSegDigit-segGroup">
+                <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
+                <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
+                <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
+                <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
+                <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
+                <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
+                <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
+            </g>
+            <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
+        </svg>
+    </div>
 </template>
 <script>
-    var proto = Object.create(HTMLElement.prototype, {
-        createdCallback: {
-            value: function() {
-                var t = document.querySelector('#digittemplate');
-                var clone = document.importNode(t.content, true);
-                this.createShadowRoot().appendChild(clone);
-            }
-        },
-        attributeChangedCallback: {
-            value: function (name, oldValue, newValue) {
-                console.log('Custom square element attributes changed. ');
-                console.log({name: name, oldValue: oldValue, newValue: newValue});
+    class SevenSegment extends HTMLElement{
+
+        static get observedAttributes() {
+            return ['value'];
+        }
+
+        constructor(){
+            super();
+            this.shadow = this.attachShadow({mode: 'open'});
+            var t = document.querySelector('#digittemplate');
+            var clone = document.importNode(t.content, true);
+            this.shadow.appendChild(clone);
+        }
+
+        attributeChangedCallback(name, oldValue, newValue){
+            console.log('Custom square element attributes changed. ');
+            console.log({name: name, oldValue: oldValue, newValue: newValue});
+            if(name === 'value'){
+                this.shadow.querySelector("#container").className = 'number'+newValue;
             }
         }
-    });
+    }
 
-    document.registerElement('x-seven-segment', {prototype: proto});
+    customElements.define("seven-segment", SevenSegment);
 </script>
 <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
 <noscript>
@@ -273,6 +282,12 @@ Weeks:
 </div>
 <div class="big-sevenSeg number5" id="digit6">
     <x-seven-segment digit="5"></x-seven-segment>
+</div>
+<div class="big-sevenSeg" id="digit7" style="height: 50px">
+    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
+    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
+    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
+    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
 </div>
 <script>
     // update();
