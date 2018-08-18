@@ -94,6 +94,9 @@
 <!--                                           -->
 <body>
 <template id="digittemplate">
+    <link type="text/css" rel="stylesheet" href="digits.css">
+    <link type="text/css" rel="stylesheet" href="numbers.css">
+
     <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
          xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
         <defs>
@@ -120,8 +123,15 @@
                 var clone = document.importNode(t.content, true);
                 this.createShadowRoot().appendChild(clone);
             }
+        },
+        attributeChangedCallback: {
+            value: function (name, oldValue, newValue) {
+                console.log('Custom square element attributes changed. ');
+                console.log({name: name, oldValue: oldValue, newValue: newValue});
+            }
         }
     });
+
     document.registerElement('x-seven-segment', {prototype: proto});
 </script>
 <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
@@ -262,9 +272,8 @@ Weeks:
     </svg>
 </div>
 <div class="big-sevenSeg number5" id="digit6">
-    <x-seven-segment></x-seven-segment>
+    <x-seven-segment digit="5"></x-seven-segment>
 </div>
-
 <script>
     // update();
 </script>
