@@ -52,14 +52,6 @@ h1 {
   width: 100px;
 }
 
-
-.big-sevenSeg
-{
-  padding: 0.5em;
-  height: 100px;
-  width: 100px;
-}
-
 .med-sevenSegArray5
 {
   padding: 0.25em;
@@ -72,8 +64,4 @@ h1 {
   padding: 0.25em;
   height: 75px;
   width: 370px;
-}
-
-.number5 svg g .segA {
-  fill: Red;
 }

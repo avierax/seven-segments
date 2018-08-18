@@ -31,9 +31,8 @@
     </script>
     <script>
         var ariel_epoc = 1534588128891;
-        function update(){
-            setTimeout(update,999);
-            var d = Date.now();
+
+        function calculateTimeMeasurements(d) {
             var ellapsed = d - ariel_epoc;
             var seconds = ellapsed / 1000;
             var minutes = seconds / 60;
@@ -41,23 +40,43 @@
             var days = hours / 24;
             var weeks = days / 7;
             var years = days / 365;
-
             var secondOfTheMinute = seconds % 60;
             var minuteOfTheHour = minutes % 60;
             var hourOfTheDay = hours % 24;
             var dayOfTheYear = days % 365;
             var dayOfTheWeek = days % 7;
-            var weeksFraction = weeks % (365 / 7);
+            var weekOfTheYear = weeks % (365 / 7);
+
+            return {
+                ellapsed : ellapsed ,
+                seconds : seconds ,
+                minutes : minutes ,
+                hours : hours ,
+                days : days ,
+                weeks : weeks ,
+                years : years ,
+                secondOfTheMinute : secondOfTheMinute ,
+                minuteOfTheHour : minuteOfTheHour ,
+                hourOfTheDay : hourOfTheDay ,
+                dayOfTheYear : dayOfTheYear ,
+                dayOfTheWeek : dayOfTheWeek ,
+                weekOfTheYear : weekOfTheYear
+            }
+        }
+        function update(){
+            setTimeout(update,999);
+            var d = calculateTimeMeasurements(Date.now());
+            console.info(d);
 
             var t = function(n) { return n-n%1;}
             var t1 = function(n) { return n;}
 
-            var string1 = t(years) +" years, \t "
-                +t(weeks)+" weeks, \t"
-                +t(dayOfTheWeek)+" days,\t "
-                +t(hourOfTheDay)+" hours,\t "
-                +t(minuteOfTheHour)+" minutes,\t "
-                +t(secondOfTheMinute)+" seconds."
+            var string1 = t(d.years) +" years, \t "
+                +t(d.weekOfTheYear)+" weeks, \t"
+                +t(d.dayOfTheWeek)+" days,\t "
+                +t(d.hourOfTheDay)+" hours,\t "
+                +t(d.minuteOfTheHour)+" minutes,\t "
+                +t(d.secondOfTheMinute)+" seconds."
 
             var dayzero = ariel_epoc / 1000 / 60 / 60 / 24;
 
@@ -74,7 +93,37 @@
 <!-- to create a completely dynamic UI.        -->
 <!--                                           -->
 <body>
-
+<template id="digittemplate">
+    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
+        <defs>
+            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
+            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
+        </defs>
+        <g class="sevenSegDigit-segGroup">
+            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
+            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
+            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
+            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
+            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
+            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
+            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
+        </g>
+        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
+    </svg>
+</template>
+<script>
+    var proto = Object.create(HTMLElement.prototype, {
+        createdCallback: {
+            value: function() {
+                var t = document.querySelector('#digittemplate');
+                var clone = document.importNode(t.content, true);
+                this.createShadowRoot().appendChild(clone);
+            }
+        }
+    });
+    document.registerElement('x-seven-segment', {prototype: proto});
+</script>
 <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
 <noscript>
     <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
@@ -136,9 +185,7 @@ Weeks:
         <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
     </svg>
 </div>
-
-
-<div class="big-sevenSeg number1" id="digit2">
+<div class="big-sevenSeg number2" id="digit2">
     <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
          xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
         <defs>
@@ -157,8 +204,69 @@ Weeks:
         <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
     </svg>
 </div>
+<div class="big-sevenSeg number3" id="digit3">
+    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
+        <defs>
+            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
+            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
+        </defs>
+        <g class="sevenSegDigit-segGroup">
+            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
+            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
+            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
+            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
+            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
+            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
+            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
+        </g>
+        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
+    </svg>
+</div>
+<div class="big-sevenSeg number4" id="digit4">
+    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
+        <defs>
+            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
+            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
+        </defs>
+        <g class="sevenSegDigit-segGroup">
+            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
+            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
+            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
+            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
+            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
+            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
+            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
+        </g>
+        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
+    </svg>
+</div>
+<div class="big-sevenSeg number5" id="digit5">
+    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
+        <defs>
+            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
+            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
+        </defs>
+        <g class="sevenSegDigit-segGroup">
+            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
+            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
+            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
+            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
+            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
+            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
+            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
+        </g>
+        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
+    </svg>
+</div>
+<div class="big-sevenSeg number5" id="digit6">
+    <x-seven-segment></x-seven-segment>
+</div>
+
 <script>
-    update();
+    // update();
 </script>
 </body>
 </html>

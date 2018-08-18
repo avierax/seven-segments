@@ -1,7 +1,27 @@
 /* number 0 */
 
-.number0 {
+.number0 svg g .segA {
+  fill: Red;
+}
 
+.number0 svg g .segB {
+  fill: Red;
+}
+
+.number0 svg g .segC {
+  fill: Red;
+}
+
+.number0 svg g .segD {
+  fill: Red;
+}
+
+.number0 svg g .segE {
+  fill: Red;
+}
+
+.number0 svg g .segF {
+  fill: Red;
 }
 
 /* number 1 */
@@ -58,8 +78,43 @@
   fill: Red;
 }
 
+/* number 4 */
+
+.number4 svg g .segB {
+  fill: Red;
+}
+
+.number4 svg g .segC {
+  fill: Red;
+}
+
+.number4 svg g .segF {
+  fill: Red;
+}
+
+.number4 svg g .segG {
+  fill: Red;
+}
+
+/* number 5 */
 
 .number5 svg g .segA {
+  fill: Red;
+}
+
+.number5 svg g .segC {
+  fill: Red;
+}
+
+.number5 svg g .segD {
+  fill: Red;
+}
+
+.number5 svg g .segF {
+  fill: Red;
+}
+
+.number5 svg g .segG {
   fill: Red;
 }
 
