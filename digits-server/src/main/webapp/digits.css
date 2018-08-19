@@ -38,19 +38,12 @@ h1 {
   overflow: hidden;
   stroke-width: 0;
   height: 100%;
-  width: 100%;
   background-color: Black;
 }
 
 /*.sevenSeg-segOn {*/
   /*fill: Red;*/
 /*}*/
-
-.big-sevenSeg {
-  padding: 0.5em;
-  height: 100px;
-  width: 100px;
-}
 
 .med-sevenSegArray5
 {

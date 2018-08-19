@@ -97,7 +97,7 @@
     <link type="text/css" rel="stylesheet" href="digits.css">
     <link type="text/css" rel="stylesheet" href="numbers.css">
 
-    <div id="container" style="display: inline-block">
+    <div id="container" style="display: inline-block; margin: -2px">
         <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
              xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
             <defs>
@@ -119,24 +119,42 @@
 </template>
 <script>
     class SevenSegment extends HTMLElement{
-
         static get observedAttributes() {
-            return ['value'];
+            return ['value', 'width', 'dot'];
         }
 
         constructor(){
             super();
             this.shadow = this.attachShadow({mode: 'open'});
-            var t = document.querySelector('#digittemplate');
-            var clone = document.importNode(t.content, true);
+            let t = document.querySelector('#digittemplate');
+            let clone = document.importNode(t.content, true);
             this.shadow.appendChild(clone);
+            this.setWidth("100px");
         }
 
+        setWidth(width){
+            this.shadow.querySelector("svg").style.width = width;
+        }
+
+        setValue(value){
+            this.shadow.querySelector("#container").className = 'number'+value;
+        }
         attributeChangedCallback(name, oldValue, newValue){
             console.log('Custom square element attributes changed. ');
             console.log({name: name, oldValue: oldValue, newValue: newValue});
-            if(name === 'value'){
-                this.shadow.querySelector("#container").className = 'number'+newValue;
+            switch(name) {
+                case 'value' :
+                    this.setValue(newValue);
+                    break;
+                case 'width' :
+                    this.setWidth(newValue);
+                    break;
+                case 'dot' :
+                    if(newValue)
+                        this.shadow.querySelector('.segPoint').style.fill = 'red';
+                    else
+                        this.shadow.querySelector('.segPoint').style.fill = '#320000';
+                    break;
             }
         }
     }
@@ -144,150 +162,16 @@
     customElements.define("seven-segment", SevenSegment);
 </script>
 <!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
-<noscript>
-    <div style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
-        Your web browser must have JavaScript enabled
-        in order for this application to display correctly.
-    </div>
-</noscript>
 
 <h1 id="epoc">Web Application Starter Project</h1>
 
-<table align="center">
-    <tr>
-        <td colspan="2" style="font-weight:bold;">Please enter your name:</td>
-    </tr>
-    <tr>
-        <td id="nameFieldContainer"></td>
-        <td id="sendButtonContainer"></td>
-    </tr>
-    <tr>
-        <td colspan="2" style="color:red;" id="errorLabelContainer"></td>
-    </tr>
-</table>
 Weeks:
-<div class="big-sevenSeg number0" id="digit0">
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
-</div>
-<div class="big-sevenSeg number1" id="digit1">
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
-</div>
-<div class="big-sevenSeg number2" id="digit2">
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
-</div>
-<div class="big-sevenSeg number3" id="digit3">
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
-</div>
-<div class="big-sevenSeg number4" id="digit4">
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
-</div>
-<div class="big-sevenSeg number5" id="digit5">
-    <svg class="sevenSeg-svg" viewBox="0 0 57 80" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false">
-        <defs>
-            <polyline id="h-seg" points="11 0, 37 0, 42 5, 37 10, 11 10, 6 5"></polyline>
-            <polyline id="v-seg" points="0 11, 5 6, 10 11, 10 34, 5 39, 0 39"></polyline>
-        </defs>
-        <g class="sevenSegDigit-segGroup">
-            <use xlink:href="#h-seg" x="0" y="0" class="sevenSeg-segOn segA"></use>
-            <use xlink:href="#v-seg" x="-48" y="0" transform="scale(-1,1)" class="sevenSeg-segOn segB"></use>
-            <use xlink:href="#v-seg" x="-48" y="-80" transform="scale(-1,-1)" class="sevenSeg-segOn segC"></use>
-            <use xlink:href="#h-seg" x="0" y="70" class="sevenSeg-segOn segD"></use>
-            <use xlink:href="#v-seg" x="0" y="-80" transform="scale(1,-1)" class="sevenSeg-segOn segE"></use>
-            <use xlink:href="#v-seg" x="0" y="0" class="sevenSeg-segOn segF"></use>
-            <use xlink:href="#h-seg" x="0" y="35" class="sevenSeg-segOn segG"></use>
-        </g>
-        <circle cx="52" cy="75" r="5" class="false segPoint"></circle>
-    </svg>
-</div>
-<div class="big-sevenSeg number5" id="digit6">
-    <x-seven-segment digit="5"></x-seven-segment>
-</div>
-<div class="big-sevenSeg" id="digit7" style="height: 50px">
-    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
-    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
-    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
-    <seven-segment class="big-sevenSeg" value="5" ></seven-segment>
+
+<div id="weeks" style="height: 50px; width: 100%">
+    <seven-segment value="5" width="50px"></seven-segment>
+    <seven-segment value="5" width="150px"></seven-segment>
+    <seven-segment value="5" ></seven-segment>
+    <seven-segment value="5" dot="true" ></seven-segment>
 </div>
 <script>
     // update();
